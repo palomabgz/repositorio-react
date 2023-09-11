@@ -1,13 +1,27 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-
 import { TwitterCardContainer } from './componentes/TwitterCard/TwitterCardContainer'
+
+const users = [
+  {
+    userName: 'userName',
+    name: 'name',
+    isFollowing: 'isFollowing'
+  }
+]
 
 export function App () {
   return (
     <section className="App">
-      <TwitterCardContainer/>
+      {
+        users.map(({ userName, name, isFollowing }) => (
+        <TwitterCardContainer
+          key={userName}
+          userName={userName}
+          initialIsFollowing={isFollowing}
+          >
+          {name}
+        </TwitterCardContainer>
+        ))
+      }
     </section>
   )
 }
