@@ -38,17 +38,41 @@
     transition: .3s ease background-color;
 }
 
-.twitter-button.is-following {
-    border: 1px solid red;
+.twitter-button:hover {
+    opacity: .8;
 }
 
-.twitter-button:hover {
-    background-color: #65b7ff;
+.twitter-isFollow {
+    display: block;
+}
+
+.twitter-button.is-following {
+    border: 1px solid #bbb;
+    background: transparent;
+    color: #fff;
+    width: 140px;
 }
 
 .twitter-button.is-following:hover {
-    background-color: red;
+    color: red;
+    border: 1px solid red;
+    transition: .3s ease all;
+    opacity: 1;
+    background-color: rgba(255, 0, 0, 0.178)
 }
+
+.twitter-notFollow {
+    display: none;
+}
+
+.twitter-button.is-following:hover .twitter-isFollow {
+    display: none;
+}
+
+.twitter-button.is-following:hover .twitter-notFollow {
+    display: block;
+}
+
 
 .twitterContainer {
     display: flex;
