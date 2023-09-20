@@ -26,10 +26,10 @@ export function App () {
     // [ej. fetch > devuelve una promesa > primer '.then' > res.json > devuelve otra promesa > segundo '.then con setFact'].
       .then(res => {
 
-        // lógica de return en caso de que falle la request de respuesta.
-        if (!res.ok) {
-          setFactError('No se ha podido recuperar la cita')
-        }
+// lógica de return en caso de que falle la request de respuesta.
+        // if (!res.ok) {
+        //   setFactError('No se ha podido recuperar la cita')
+        // }
 
         return res.json()
       })
@@ -87,3 +87,9 @@ export function App () {
     // CAT_PREFIX_IMAGE_URL se utiliza para no añadir info de más en el setImageUrl.
   )
 }
+
+// podría ser posible añadir un <button onClick={handleClick}></button> y 
+// estar ligado a una funcion 'const' con el nombre 'handleClick' y dentro
+// de ella llevar el código del primer useEffect [es decir, el fetch].
+// es sumamente necesario dejar el ', [])' fuera del fetch pues pertenece
+// a las dependencias del useEffect.
