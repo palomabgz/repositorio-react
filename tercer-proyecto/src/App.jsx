@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { getRandomFact } from './services/facts'
 
 // es mejor colocar las APIs en constantes como buena práctica.
 const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact'
-// const CAT_ENDPOINT_IMAGE_URL = `https://cataas.com/cat/says/${threeFirstWords}?size=50&color=red&json=true`
+
 // utilizzamos esta lógica debido a que la variable puede cambiar y así sólo cambiar el url.
 const CAT_PREFIX_IMAGE_URL = 'https://cataas.com/'
 
@@ -15,34 +16,19 @@ export function App () {
   const [imageUrl, setImageUrl] = useState()
 
   // en caso de fallar la request de respuesta.
-  const [factError, setFactError] = useState()
+  // const [factError, setFactError] = useState()
 
   // ¡¡PRIMER EFECTO PARA RECUPERAR LA CITA AL CARGAR LA PÁGINA!!
   // es necesario utilizar useEffect para hacer un fetch de datos
   // ya que éste último no se puede colocar directo en el DOM.
-  useEffect(() => {
-    fetch(CAT_ENDPOINT_RANDOM_FACT)
-    // se utilizan dos .then para concatenar promesas.
-    // [ej. fetch > devuelve una promesa > primer '.then' > res.json > devuelve otra promesa > segundo '.then con setFact'].
-      .then(res => {
-
-// lógica de return en caso de que falle la request de respuesta.
-        // if (!res.ok) {
-        //   setFactError('No se ha podido recuperar la cita')
-        // }
-
-        return res.json()
-      })
-      .then(data => {
-        // se recupera el hecho (ligado al primer usesState).
-        const { fact } = data
-        setFact(fact)
-      })
+  // el 'fetch' se colocó en la lógica externa 'getRandomFact' para el botón.
+  useEffect(() => { 
+    getRandomFact().then(setFact)
+  }, [])
       // si no hay '[]', el efecto se ejecutará cada vez que se renderiza el componente (loop infinito).
       // si hay '[]', el efecto se ejecutará una primera vez nada más.
       // si hay '[]' con dependencias dentro, el efecto se ejecutará la primera vez que se renderice
-      // el componente y cada vez que el valor de 'setFact' cambie.
-  }, []) 
+      // el componente y cada vez que el valor de 'setFact' cambie. 
 
 
   // ¡¡SEGUNDO EFECTO PARA RECUPERAR LA IMAGEN AL TENER UNA CITA!!
@@ -74,10 +60,18 @@ export function App () {
       // debe ejecutar el segundo efecto.
   }, [fact])
 
+  const handleClick = async () => {
+    const newFact = await getRandomFact()
+    setFact(newFact)
+  }
+
   return (
     // con el 'return' lo que hacemos es devolver la información para visualizar.
     <main>
       <h1>App de gatitos</h1>
+
+      <button onClick={handleClick}>Get new fact</button>
+
       {fact && <p>{fact}</p>}
       {imageUrl && <img src={`${CAT_PREFIX_IMAGE_URL}${imageUrl}`} alt={`Image extracted using 
       the first three words for ${fact}`} />}
@@ -88,8 +82,5 @@ export function App () {
   )
 }
 
-// podría ser posible añadir un <button onClick={handleClick}></button> y 
-// estar ligado a una funcion 'const' con el nombre 'handleClick' y dentro
-// de ella llevar el código del primer useEffect [es decir, el fetch].
 // es sumamente necesario dejar el ', [])' fuera del fetch pues pertenece
 // a las dependencias del useEffect.
