@@ -23,7 +23,7 @@ export function App () {
   // ya que éste último no se puede colocar directo en el DOM.
   // el 'fetch' se colocó en la lógica externa 'getRandomFact' para el botón.
   useEffect(() => { 
-    getRandomFact().then(setFact)
+    getRandomFact().then(newFact => setFact(newFact))
   }, [])
       // si no hay '[]', el efecto se ejecutará cada vez que se renderiza el componente (loop infinito).
       // si hay '[]', el efecto se ejecutará una primera vez nada más.
