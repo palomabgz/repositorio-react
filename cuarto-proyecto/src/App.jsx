@@ -1,44 +1,41 @@
 import { useState } from 'react'
-import responseMovies from './mocks/with-results.json'
+import { Movies } from './components/movies'
+import { useMovies } from './hooks/useMovies'
 import './App.css'
 
 function App () {
-  // 'movies' se encuentra dentro de 'responseMovies' en la parte de 'search' (en el archivo json)
-  const movies = responseMovies.Search
-  // tiene películas cuando 'movies' tiene un length mayor a cero.
-  const hasMovies = movies?.length > 0
+  const { movies: mappedMovies } = useMovies()
+
+  // NUEVO HOOK POSIBLE DE USAR: 'useRef'.
+  // hook que permite crear una referencia mutable que persiste durante todo el ciclo de vida del componente.
+  // útil para guardar cualquier valor mutable [ej. un contador] que cada vez que cambia no renderiza el componente.
+  // por lo que es distinto al 'useState' ya que en éste se renderiza el componente cada vez que cambia.  
+  // recuperamos los datos desde el 'event' que lo recibe a través del 'target' (que es el propio formulario).
+  // utilizamos JavaScript Vanilla para no depender de React.
+  // gestionamos los datos de manera 'descontrolada' es decir que el formulario se gestiona a través del DOM.
+  // en caso de querer hacerlo de manera 'controlada', se debe usar un useState (pero es más lento).
+  
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const data = new window.ForData(event.target)
+    const query = data.get('query')
+  }
 
   // es necesario crear un formulario con un botón de búsqueda.
+  // en el 'ul' se hace llamado a los objetos dentro de los '{}' para obtener la info.
+  // se usa ID del array [en este caso de 'movie'] como buena práctica y no el 'indice' del mismo.
   return (
     <div className='page'>
       <header>
         <h1>Buscador de Películas</h1>
-        <form className='form'>
-          <input placeholder="Avengers, Star Wars, The Matrix..." />
+        <form className='form' onSubmit={handleSubmit}>
+          <input name='query' placeholder="Avengers, Star Wars, The Matrix..." />
           <button type='submit'>Buscar</button>
         </form>
       </header>
 
       <main>
-        {
-          hasMovies
-          ? (
-            <ul>
-              {
-                movies.map(movie => (
-                  <li key={movie.imdbID}>
-                    <h3>{movie.Title}</h3>
-                    <p>{movie.Year}</p>
-                    <img src={movie.Poster} alt={movie.Title} />
-                  </li>
-                ))
-              }
-            </ul>
-            )
-          : (
-            <p>No se encontraron películas para esta búsqueda</p>
-            )
-        }
+        <Movies movies={mappedMovies} />
       </main>
     </div>
   )
