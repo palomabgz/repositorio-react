@@ -1,17 +1,53 @@
+/* grid-template-colums : cómo debe comportarse las columnas dentro de la grilla.
+repetar: que se repita lo que está dentro de los ().
+auto-fill: ocupar espacio disponible (minmax es ocupar si o si los px que se ponga)
+y en caso de que no, ocuparán 1 fr (fracción) - su valor depende de cómo se divide el contenido.
+es importante poner el width del main al 100%
+gap: separación entre elementos.
+padding: separación de elementos con los bordes de la pantalla 
+o especificar (left, right) si se desea hacerlo entre elementos*/
+
 .page {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  max-width: 800px;
 }
 
 main {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 form {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: center;
+}
+
+.movies {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  width: 100%;
+  gap: 32px;
+}
+
+.movie {
+  text-align: center;
+}
+
+.movie h3, .movie p {
+  margin: 0;
+}
+
+.movie img {
+  border-radius: 8px;
+  margin-top: 16px;
 }
